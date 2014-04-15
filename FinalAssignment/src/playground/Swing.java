@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author mario
  */
-public class Swing extends Attraction{
+public class Swing extends Attraction {
 
     public Swing() {
         super.playingQueue = new ArrayList<>(3);
@@ -34,23 +34,23 @@ public class Swing extends Attraction{
     }
     
     private synchronized void enter(Child child) {
-        //swing full -> wait
-        while (super.playingQueue.size() == 3) {
-            if (!super.waitingQueue.contains(child)) 
-                super.waitingQueue.add(child);
+        
+        super.waitingQueue.add(child);
+        //wait while full or not first in waitqueue
+        while (super.playingQueue.size() == 3 || super.waitingQueue.indexOf(child) != 0) {
             try {
                 wait();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Swing.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        //free slot -> use swing
+        //free slot
+        super.waitingQueue.remove(child);
         super.playingQueue.add(child);
     }
     
     private synchronized void leave (Child child) {
         playingQueue.remove(child);
         notifyAll();
-    }
-    
+    }    
 }
