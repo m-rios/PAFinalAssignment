@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 public class Swing extends Attraction {
 
     public Swing() {
+        super();
         super.playingQueue = new ArrayList<>(3);
     }
 

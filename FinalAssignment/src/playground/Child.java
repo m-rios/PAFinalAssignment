@@ -28,6 +28,10 @@ public class Child extends Thread {
         this.slide = slide;
         this.swing = swing;
     }
+    
+    public int getIdN() {
+        return this.id;
+    }
 
     @Override
     public void run() {
