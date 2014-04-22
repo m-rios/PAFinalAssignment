@@ -28,6 +28,8 @@ public class Child extends Thread {
         this.carousel = carousel;
         this.slide = slide;
         this.swing = swing;
+        gate = new Gateway();
+        start();
     }
     
     public int getIdN() {
@@ -51,7 +53,7 @@ public class Child extends Thread {
             //randomly pick an attraction
             switch (gen.nextInt(4) % 3) {
                 case 0:
-                    carousel.use(this);
+                    //carousel.use(this);
                     break;
                 case 1:
                     slide.use(this);
