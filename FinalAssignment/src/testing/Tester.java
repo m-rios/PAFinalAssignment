@@ -6,6 +6,7 @@
 
 package testing;
 
+import java.util.ArrayList;
 import playground.Carousel;
 import playground.Child;
 import playground.Slide;
@@ -26,9 +27,10 @@ public class Tester {
         Swing swing = new Swing();
         Slide slide = new Slide();
         Carousel carousel = new Carousel();
+        ArrayList<Child> deciding = new ArrayList<Child>();
         
         for (int i = 0; i < 10; i++) {
-            new Child(i, carousel, slide, swing);
+            new Child(i, carousel, slide, swing, deciding);
         }
     }
     

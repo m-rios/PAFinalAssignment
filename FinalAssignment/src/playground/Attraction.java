@@ -20,9 +20,13 @@ public abstract class Attraction {
         waitingQueue = new ArrayList<>();
     }
     
-    public boolean isEmpty () {
-        return playingQueue.isEmpty();
+    public abstract void use (Child child);
+    
+    public synchronized boolean checkIsPlaying(Child child) {
+        return playingQueue.contains(child);
     }
     
-    public abstract void use (Child child);
+    public synchronized boolean checkIsWaiting(Child child) {
+        return waitingQueue.contains(child);
+    }
 }
