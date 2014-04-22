@@ -20,6 +20,7 @@ public class Child extends Thread {
     private Swing swing;
     private int id;
     private int age;
+    private Gateway gate;
 
     public Child(int id, Carousel carousel, Slide slide, Swing swing) {
         this.id = id;
@@ -39,12 +40,14 @@ public class Child extends Thread {
         Random gen = new Random();
         
         while (true) {
+            gate.look();
             try {
                 //decide for some time
                 sleep((long)(200 + 1800*Math.random()));
             } catch (InterruptedException ex) {
                 Logger.getLogger(Child.class.getName()).log(Level.SEVERE, null, ex);
             }
+            gate.look();
             //randomly pick an attraction
             switch (gen.nextInt(4) % 3) {
                 case 0:
