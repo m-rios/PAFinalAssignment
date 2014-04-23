@@ -21,4 +21,7 @@ public class Gateway {
     public synchronized void close(){
         closed=true;
     }
+    public synchronized boolean isClosed(){
+        return closed;
+    }
 }

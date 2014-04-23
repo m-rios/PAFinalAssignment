@@ -24,13 +24,13 @@ public class Child extends Thread {
     private Gateway gate;
     private ArrayList<Child> deciding;
 
-    public Child(int id, Carousel carousel, Slide slide, Swing swing, ArrayList<Child> deciding) {
+    public Child(int id, Carousel carousel, Slide slide, Swing swing, ArrayList<Child> deciding, Gateway gate) {
         this.id = id;
         this.age = 3 + (id % 10);
         this.carousel = carousel;
         this.slide = slide;
         this.swing = swing;
-        gate = new Gateway();
+        this.gate = gate;
         this.deciding = deciding;        
         start();
     }

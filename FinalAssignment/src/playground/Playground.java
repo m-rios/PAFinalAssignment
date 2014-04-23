@@ -26,14 +26,15 @@ public class Playground extends javax.swing.JFrame {
     Slide slide = new Slide();
     ArrayList<Child> children = new ArrayList<>();
     ArrayList<Child> deciding = new ArrayList<>();
+    Gateway gate = new Gateway();
     
-    public Playground() {
+    public Playground() {  
+        gate.close();
         initComponents();
         for (int i = 11; i < 61; i++) {
-            children.add(new Child(i, carousel, slide, swing, deciding));
+            children.add(new Child(i, carousel, slide, swing, deciding, gate));
             jComboBox1.addItem(i);
         }
-        
     }
 
     /**
@@ -290,7 +291,6 @@ public class Playground extends javax.swing.JFrame {
 
         jLabel9.setText("Select a child:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(children.toArray()));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -331,6 +331,11 @@ public class Playground extends javax.swing.JFrame {
         jTabbedPane1.addTab("Children", jPanel2);
 
         jButton1.setText("Open");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -356,9 +361,19 @@ public class Playground extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        String value = children.get(jComboBox1.getSelectedIndex()).getStatus();
-        jTextField1.setText(value);
+        
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if (gate.isClosed()) {
+            jButton1.setText("Close");
+            gate.open();
+        } else {
+            jButton1.setText("Open");
+            gate.close();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
