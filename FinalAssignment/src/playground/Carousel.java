@@ -11,6 +11,7 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -20,8 +21,8 @@ public class Carousel extends Attraction {
 
     final CyclicBarrier barrier;
 
-    public Carousel() {
-        super();
+    public Carousel(JTextArea outputPlay,JTextArea outputWait) {
+        super(outputPlay,outputWait);
         super.playingQueue = new ArrayList<>(5);
         barrier = new CyclicBarrier(5);
     }
@@ -39,6 +40,7 @@ public class Carousel extends Attraction {
 
     private synchronized void enter(Child child) {
         super.waitingQueue.add(child);
+        updateWaitView();
         //wait while full or not first in waiting queue
         while (playingQueue.size() == 5 && waitingQueue.indexOf(child) != 0) {
             try {
@@ -47,7 +49,9 @@ public class Carousel extends Attraction {
             }
         }
         super.waitingQueue.remove(child);
+        updateWaitView();
         super.playingQueue.add(child);
+        updatePlayView();
         //wait until all 5 sits are occupied.
         try {
             barrier.await();
@@ -58,6 +62,7 @@ public class Carousel extends Attraction {
 
     private synchronized void leave(Child child) {
         playingQueue.remove(child);
+        updatePlayView();
         if (playingQueue.isEmpty()) {
             notifyAll();
         }

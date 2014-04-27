@@ -10,6 +10,7 @@ import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -17,8 +18,8 @@ import java.util.logging.Logger;
  */
 public class Swing extends Attraction {
 
-    public Swing() {
-        super();
+    public Swing(JTextArea outputPlay,JTextArea outputWait) {
+        super(outputPlay,outputWait);
         super.playingQueue = new ArrayList<>(3);
     }
 
@@ -37,6 +38,7 @@ public class Swing extends Attraction {
     private synchronized void enter(Child child) {
         
         super.waitingQueue.add(child);
+        updateWaitView();
         //wait while full or not first in waitqueue
         while (super.playingQueue.size() == 3 || super.waitingQueue.indexOf(child) != 0) {
             try {
@@ -47,11 +49,14 @@ public class Swing extends Attraction {
         }
         //free slot
         super.waitingQueue.remove(child);
+        updateWaitView();
         super.playingQueue.add(child);
+        updatePlayView();
     }
     
     private synchronized void leave (Child child) {
         playingQueue.remove(child);
+        updatePlayView();
         notifyAll();
     }    
 }

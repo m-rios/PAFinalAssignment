@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -23,8 +24,9 @@ public class Child extends Thread {
     private int age;
     private Gateway gate;
     private ArrayList<Child> deciding;
+    private JTextArea output;
 
-    public Child(int id, Carousel carousel, Slide slide, Swing swing, ArrayList<Child> deciding, Gateway gate) {
+    public Child(int id, Carousel carousel, Slide slide, Swing swing, ArrayList<Child> deciding, Gateway gate,JTextArea output) {
         this.id = id;
         this.age = 3 + (id % 10);
         this.carousel = carousel;
@@ -32,6 +34,7 @@ public class Child extends Thread {
         this.swing = swing;
         this.gate = gate;
         this.deciding = deciding;        
+        this.output = output;
         start();
     }
     
@@ -55,6 +58,14 @@ public class Child extends Thread {
         }
         return "deciding";
     }
+    
+    private void updateOuput(){
+        String value = "";
+        for (int i = 0; i < deciding.size(); i++) {
+            value += deciding.get(i).getIdN()+ "\n";
+        }
+        this.output.setText(value);
+    }
 
     @Override
     public void run() {
@@ -65,6 +76,7 @@ public class Child extends Thread {
             gate.look();
             synchronized (deciding) {
                 deciding.add(this);
+                updateOuput();
             }
             try {
                 //decide for some time
@@ -75,6 +87,7 @@ public class Child extends Thread {
             gate.look();
             synchronized (deciding) {
                 deciding.remove(this);
+                updateOuput();
             }
             //randomly pick an attraction
             switch (gen.nextInt(4) % 3) {

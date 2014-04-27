@@ -21,9 +21,9 @@ public class Playground extends javax.swing.JFrame {
     /**
      * Creates new form Playground
      */
-    Swing swing = new Swing();
-    Carousel carousel = new Carousel();
-    Slide slide = new Slide();
+    Swing swing;
+    Carousel carousel;
+    Slide slide;
     ArrayList<Child> children = new ArrayList<>();
     ArrayList<Child> deciding = new ArrayList<>();
     Gateway gate = new Gateway();
@@ -31,8 +31,11 @@ public class Playground extends javax.swing.JFrame {
     public Playground() {  
         gate.close();
         initComponents();
+        swing = new Swing(jTextArea1, jTextArea2);
+        carousel = new Carousel(jTextArea5, jTextArea6);
+        slide = new Slide(jTextArea3, jTextArea4);
         for (int i = 11; i < 61; i++) {
-            children.add(new Child(i, carousel, slide, swing, deciding, gate));
+            children.add(new Child(i, carousel, slide, swing, deciding, gate,jTextArea8));
             jComboBox1.addItem(i);
         }
     }
@@ -176,7 +179,7 @@ public class Playground extends javax.swing.JFrame {
         );
 
         jPanel5.setBackground(new java.awt.Color(229, 229, 229));
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Slide"));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Carousel"));
 
         jLabel5.setText("Children playing:");
 

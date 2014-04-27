@@ -6,6 +6,7 @@
 package playground;
 
 import java.util.ArrayList;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -15,18 +16,38 @@ public abstract class Attraction {
 
     protected ArrayList<Child> playingQueue;
     protected ArrayList<Child> waitingQueue;
+    protected JTextArea outputPlay;
+    protected JTextArea outputWait;
 
-    public Attraction() {
+    public Attraction(JTextArea outputPlay, JTextArea outputWait) {
         waitingQueue = new ArrayList<>();
+        this.outputPlay = outputPlay;
+        this.outputWait = outputWait;
     }
-    
-    public abstract void use (Child child);
-    
+
+    public abstract void use(Child child);
+
     public synchronized boolean checkIsPlaying(Child child) {
         return playingQueue.contains(child);
     }
-    
+
     public synchronized boolean checkIsWaiting(Child child) {
         return waitingQueue.contains(child);
+    }
+
+    public void updatePlayView() {
+        String value = "";
+        for (int i = 0; i < playingQueue.size(); i++) {
+            value += playingQueue.get(i).getIdN()+ "\n";
+        }
+        this.outputPlay.setText(value);
+    }
+
+    public void updateWaitView() {
+        String value = "";
+        for (int i = 0; i < waitingQueue.size(); i++) {
+            value += waitingQueue.get(i).getIdN()+ "\n";
+        }
+        this.outputPlay.setText(value);
     }
 }

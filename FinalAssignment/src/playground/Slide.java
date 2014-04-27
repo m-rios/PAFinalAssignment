@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -19,8 +20,8 @@ public class Slide extends Attraction {
 
     private Semaphore semaphore;
 
-    public Slide() {
-        super();
+    public Slide(JTextArea outputPlay,JTextArea outputWait) {
+        super(outputPlay,outputWait);
         super.playingQueue = new ArrayList<>(1);
         semaphore = new Semaphore(1);
     }
@@ -44,6 +45,7 @@ public class Slide extends Attraction {
     private void enter(Child child) {
         synchronized (this) {
             waitingQueue.add(child);
+            updateWaitView();
         }
         try {
             semaphore.acquire();
@@ -53,13 +55,16 @@ public class Slide extends Attraction {
         }
         synchronized (this) {
             waitingQueue.remove(child);
+            updateWaitView();
             playingQueue.add(child);
+            updatePlayView();
         }
     }
 
     private void leave(Child child) {
         synchronized (this) {
             playingQueue.remove(child);
+            updatePlayView();
         }
         semaphore.release();
     }
