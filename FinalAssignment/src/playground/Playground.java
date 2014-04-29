@@ -32,7 +32,7 @@ public class Playground extends javax.swing.JFrame {
         gate.close();
         initComponents();
         swing = new Swing(jTextArea1, jTextArea2);
-        carousel = new Carousel(jTextArea5, jTextArea6);
+        carousel = new Carousel(jTextArea5, jTextArea6,jProgressBar1);
         slide = new Slide(jTextArea3, jTextArea4);
         for (int i = 11; i < 61; i++) {
             children.add(new Child(i, carousel, slide, swing, deciding, gate,jTextArea8));

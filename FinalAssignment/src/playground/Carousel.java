@@ -11,6 +11,7 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 
 /**
@@ -20,19 +21,36 @@ import javax.swing.JTextArea;
 public class Carousel extends Attraction {
 
     final CyclicBarrier barrier;
+    JProgressBar indicator;
 
-    public Carousel(JTextArea outputPlay,JTextArea outputWait) {
-        super(outputPlay,outputWait);
+    public Carousel(JTextArea outputPlay, JTextArea outputWait, JProgressBar progressBar) {
+        super(outputPlay, outputWait);
         super.playingQueue = new ArrayList<>(5);
         barrier = new CyclicBarrier(5);
+        this.indicator = progressBar;
+        indicator.setMaximum(10);
     }
 
     @Override
     public void use(Child child) {
         enter(child);
+        synchronized (this) {
+            notifyAll(); //esto es una puta cutrez
+        }
         try {
-            sleep((long) 5000);
-        } catch (InterruptedException ex) {
+            barrier.await();
+            if (indicator.getPercentComplete() == 0) {
+                int progress = 5;
+                while (progress < 10) {
+                    indicator.setValue(progress);
+                    progress += 5;
+                    // Update the progress bar
+                    sleep(500);
+                }
+            } else {
+                sleep((long) 5000);
+            }
+        } catch (InterruptedException | BrokenBarrierException ex) {
             Logger.getLogger(Carousel.class.getName()).log(Level.SEVERE, null, ex);
         }
         leave(child);
@@ -42,7 +60,7 @@ public class Carousel extends Attraction {
         super.waitingQueue.add(child);
         updateWaitView();
         //wait while full or not first in waiting queue
-        while (playingQueue.size() == 5 && waitingQueue.indexOf(child) != 0) {
+        while (playingQueue.size() == 5 || waitingQueue.indexOf(child) != 0) {
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -53,11 +71,11 @@ public class Carousel extends Attraction {
         super.playingQueue.add(child);
         updatePlayView();
         //wait until all 5 sits are occupied.
-        try {
-            barrier.await();
-        } catch (InterruptedException | BrokenBarrierException ex) {
-            Logger.getLogger(Carousel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        /*try {
+         barrier.await();
+         } catch (InterruptedException | BrokenBarrierException ex) {
+         Logger.getLogger(Carousel.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
     }
 
     private synchronized void leave(Child child) {

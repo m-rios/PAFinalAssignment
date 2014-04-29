@@ -48,6 +48,6 @@ public abstract class Attraction {
         for (int i = 0; i < waitingQueue.size(); i++) {
             value += waitingQueue.get(i).getIdN()+ "\n";
         }
-        this.outputPlay.setText(value);
+        this.outputWait.setText(value);
     }
 }
