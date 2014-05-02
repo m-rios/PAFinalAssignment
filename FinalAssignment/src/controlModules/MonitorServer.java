@@ -10,6 +10,6 @@ package controlModules;
  *
  * @author mario
  */
-public class Supervisor {
+public class MonitorServer {
     
 }
