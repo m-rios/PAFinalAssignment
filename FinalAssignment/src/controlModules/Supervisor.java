@@ -6,6 +6,19 @@
 
 package controlModules;
 
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mario
@@ -214,8 +227,18 @@ public class Supervisor extends javax.swing.JFrame {
         );
 
         jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Close");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -251,6 +274,43 @@ public class Supervisor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            Socket client = new Socket(InetAddress.getLocalHost(),2222);
+            DataOutputStream output = new DataOutputStream(client.getOutputStream());
+            DataInputStream input = new DataInputStream(client.getInputStream());
+            
+            output.writeUTF("refresh");
+            String value = input.readUTF();
+            updateView(value);
+            
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Socket client = new Socket(InetAddress.getLocalHost(),2222);            
+            DataOutputStream output = new DataOutputStream(client.getOutputStream());
+            DataInputStream input = new DataInputStream(client.getInputStream());
+            output.writeUTF("close");
+            String value = input.readUTF();
+            updateView(value);           
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void updateView(String input){
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -282,6 +342,9 @@ public class Supervisor extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Supervisor().setVisible(true);
+                
+                
+                
             }
         });
     }

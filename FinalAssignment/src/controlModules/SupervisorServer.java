@@ -52,6 +52,16 @@ public class SupervisorServer extends Thread{
         return value;
     }
     
+    private void sendSnapshot(DataOutputStream output) {
+        try {
+            output.writeUTF(playground.swing.getSnapShot());
+            output.writeUTF(playground.carousel.getSnapShot());
+            output.writeUTF(playground.slide.getSnapShot());
+        } catch (IOException ex) {
+            Logger.getLogger(SupervisorServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     public void run(){
         while(true){
@@ -62,10 +72,12 @@ public class SupervisorServer extends Thread{
                 switch (input.readUTF()){
                     case "close":
                         close();
-                        output.writeUTF(getSnapshot());
+                        //output.writeUTF(getSnapshot());
+                        sendSnapshot(output);
                         break;
                     case "refresh":
-                        output.writeUTF(getSnapshot());
+                        //output.writeUTF(getSnapshot());
+                        sendSnapshot(output);
                         break;
                 }
                 //listen to terminate order
