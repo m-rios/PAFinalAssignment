@@ -18,22 +18,27 @@ public abstract class Attraction {
     protected ArrayList<Child> waitingQueue;
     protected JTextArea outputPlay;
     protected JTextArea outputWait;
+    protected Gateway gate;
 
-    public Attraction(JTextArea outputPlay, JTextArea outputWait) {
+    public Attraction(JTextArea outputPlay, JTextArea outputWait, Gateway gate) {
         waitingQueue = new ArrayList<>();
         this.outputPlay = outputPlay;
         this.outputWait = outputWait;
+        this.gate = gate;
     }
     
-    public synchronized String getSnapShot(){
-        String value="playing\n";
+    public synchronized String[] getSnapShot(){
+        String content="";
+        String[] value = new String[2];
         for (int i = 0; i < playingQueue.size(); i++) {
-            value+=playingQueue.get(i).getIdN() + "\n";
+            content+=playingQueue.get(i).getIdN() + "\n";
         }
-        value+="waiting\n";
+        value[0] = content;
+        content="";
         for (int i = 0; i < waitingQueue.size(); i++) {
-            value+=waitingQueue.get(i).getIdN() + "\n";
+            content+=waitingQueue.get(i).getIdN() + "\n";
         }
+        value[1] = content;
         return value;
     }
 

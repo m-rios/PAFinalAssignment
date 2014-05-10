@@ -11,6 +11,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -279,15 +280,20 @@ public class Supervisor extends javax.swing.JFrame {
             // TODO add your handling code here:
             Socket client = new Socket(InetAddress.getLocalHost(),2222);
             DataOutputStream output = new DataOutputStream(client.getOutputStream());
-            DataInputStream input = new DataInputStream(client.getInputStream());
+            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
             
             output.writeUTF("refresh");
-            String value = input.readUTF();
+            String[][] value = (String[][]) input.readObject();
             updateView(value);
+            output.close();
+            input.close();
+            client.close();
             
         } catch (UnknownHostException ex) {
             Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -296,19 +302,29 @@ public class Supervisor extends javax.swing.JFrame {
         try {
             Socket client = new Socket(InetAddress.getLocalHost(),2222);            
             DataOutputStream output = new DataOutputStream(client.getOutputStream());
-            DataInputStream input = new DataInputStream(client.getInputStream());
+            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
             output.writeUTF("close");
-            String value = input.readUTF();
+            String[][] value = (String[][]) input.readObject();
             updateView(value);           
+            output.close();
+            input.close();
+            client.close();
         } catch (UnknownHostException ex) {
             Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void updateView(String input){
-        
+    private void updateView(String[][] input){
+        jTextArea1.setText(input[0][0]);
+        jTextArea2.setText(input[0][1]);
+        jTextArea3.setText(input[2][0]);
+        jTextArea4.setText(input[2][1]);
+        jTextArea5.setText(input[1][0]);
+        jTextArea6.setText(input[1][0]);
     }
     
     /**

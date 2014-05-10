@@ -20,17 +20,19 @@ public class Slide extends Attraction {
 
     private Semaphore semaphore;
 
-    public Slide(JTextArea outputPlay,JTextArea outputWait) {
-        super(outputPlay,outputWait);
+    public Slide(JTextArea outputPlay,JTextArea outputWait, Gateway gate) {
+        super(outputPlay,outputWait, gate);
         super.playingQueue = new ArrayList<>(1);
         semaphore = new Semaphore(1);
     }
 
     @Override
     public void use(Child child) {
-        enter(child);        
+        enter(child);   
+        gate.look();
         climb();
         drop();
+        gate.look();
         leave(child);
     }
 

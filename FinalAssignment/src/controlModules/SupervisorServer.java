@@ -9,6 +9,8 @@ package controlModules;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -23,8 +25,8 @@ public class SupervisorServer extends Thread{
     
     ServerSocket server;
     Socket connection;
-    DataOutputStream output;
-    DataInputStream input;
+    ObjectOutputStream output;
+    ObjectInputStream input;
     Playground playground;
     
     public SupervisorServer(Playground playground, int socket){
@@ -42,24 +44,12 @@ public class SupervisorServer extends Thread{
         playground.gate.close();
     }
     
-    private String getSnapshot(){
-        String value="swing\n";
-        value+=playground.swing.getSnapShot();
-        value+="carousel\n";
-        value+=playground.carousel.getSnapShot();
-        value+="slide\n";
-        value+=playground.slide.getSnapShot();
+    private String[][] getSnapshot(){
+        String[][] value = new String[3][2];
+        value[0] = playground.swing.getSnapShot();
+        value[1] = playground.carousel.getSnapShot();
+        value[2] = playground.slide.getSnapShot();        
         return value;
-    }
-    
-    private void sendSnapshot(DataOutputStream output) {
-        try {
-            output.writeUTF(playground.swing.getSnapShot());
-            output.writeUTF(playground.carousel.getSnapShot());
-            output.writeUTF(playground.slide.getSnapShot());
-        } catch (IOException ex) {
-            Logger.getLogger(SupervisorServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     @Override
@@ -67,17 +57,17 @@ public class SupervisorServer extends Thread{
         while(true){
             try {
                 connection = server.accept();
-                input = new DataInputStream(connection.getInputStream());
-                output = new DataOutputStream(connection.getOutputStream());
+                input = new ObjectInputStream(connection.getInputStream());
+                output = new ObjectOutputStream(connection.getOutputStream());
                 switch (input.readUTF()){
                     case "close":
                         close();
                         //output.writeUTF(getSnapshot());
-                        sendSnapshot(output);
+                        output.writeObject(getSnapshot());
                         break;
                     case "refresh":
                         //output.writeUTF(getSnapshot());
-                        sendSnapshot(output);
+                        output.writeObject(getSnapshot());
                         break;
                 }
                 //listen to terminate order

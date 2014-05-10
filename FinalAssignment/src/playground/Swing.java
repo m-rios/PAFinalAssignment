@@ -18,20 +18,22 @@ import javax.swing.JTextArea;
  */
 public class Swing extends Attraction {
 
-    public Swing(JTextArea outputPlay,JTextArea outputWait) {
-        super(outputPlay,outputWait);
+    public Swing(JTextArea outputPlay,JTextArea outputWait, Gateway gate) {
+        super(outputPlay,outputWait, gate);
         super.playingQueue = new ArrayList<>(3);
     }
 
     @Override
     public void use (Child child) {
         enter(child);
+        gate.look();
         //play
         try {
             sleep((long)(200 + 1800 * Math.random()));
         } catch (InterruptedException ex) {
             Logger.getLogger(Swing.class.getName()).log(Level.SEVERE, null, ex);
         }
+        gate.look();
         leave(child);       
     }
     

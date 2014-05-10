@@ -45,8 +45,8 @@ public class Carousel extends Attraction {
     final CyclicBarrier barrier;
     JProgressBar indicator;
 
-    public Carousel(JTextArea outputPlay, JTextArea outputWait, JProgressBar progressBar) {
-        super(outputPlay, outputWait);
+    public Carousel(JTextArea outputPlay, JTextArea outputWait, JProgressBar progressBar, Gateway gate) {
+        super(outputPlay, outputWait, gate);
         super.playingQueue = new ArrayList<>(5);
         barrier = new CyclicBarrier(5);
         this.indicator = progressBar;
@@ -57,12 +57,14 @@ public class Carousel extends Attraction {
     @Override
     public void use(Child child) {
         enter(child);
+        gate.look();
         try {
             barrier.await();
             sleep((long) 5000);
         } catch (InterruptedException | BrokenBarrierException ex) {
             Logger.getLogger(Carousel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        gate.look();
         leave(child);
     }
     
