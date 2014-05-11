@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controlModules;
 
 import java.io.DataInput;
@@ -19,6 +18,8 @@ import java.net.UnknownHostException;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -278,34 +279,32 @@ public class Supervisor extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             // TODO add your handling code here:
-            Socket client = new Socket(InetAddress.getLocalHost(),2222);
+            Socket client = new Socket(InetAddress.getLocalHost(), 2222);
             DataOutputStream output = new DataOutputStream(client.getOutputStream());
-            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
-            
             output.writeUTF("refresh");
+            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
             String[][] value = (String[][]) input.readObject();
-            updateView(value);
             output.close();
             input.close();
             client.close();
-            
+            updateView(value);
         } catch (UnknownHostException ex) {
             Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            Socket client = new Socket(InetAddress.getLocalHost(),2222);            
+            Socket client = new Socket(InetAddress.getLocalHost(), 2222);
             DataOutputStream output = new DataOutputStream(client.getOutputStream());
             ObjectInputStream input = new ObjectInputStream(client.getInputStream());
             output.writeUTF("close");
             String[][] value = (String[][]) input.readObject();
-            updateView(value);           
+            updateView(value);
             output.close();
             input.close();
             client.close();
@@ -318,49 +317,43 @@ public class Supervisor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void updateView(String[][] input){
+    private void updateView(String[][] input) {
         jTextArea1.setText(input[0][0]);
         jTextArea2.setText(input[0][1]);
         jTextArea3.setText(input[2][0]);
         jTextArea4.setText(input[2][1]);
         jTextArea5.setText(input[1][0]);
-        jTextArea6.setText(input[1][0]);
+        jTextArea6.setText(input[1][1]);
     }
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
+            /* Set the Nimbus look and feel */
+            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+            * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+            */
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Supervisor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Supervisor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Supervisor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Supervisor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Supervisor.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Supervisor().setVisible(true);
-                
-                
-                
+
             }
         });
     }

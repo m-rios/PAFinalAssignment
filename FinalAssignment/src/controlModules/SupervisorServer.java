@@ -26,7 +26,7 @@ public class SupervisorServer extends Thread{
     ServerSocket server;
     Socket connection;
     ObjectOutputStream output;
-    ObjectInputStream input;
+    DataInputStream input;
     Playground playground;
     
     public SupervisorServer(Playground playground, int socket){
@@ -57,7 +57,7 @@ public class SupervisorServer extends Thread{
         while(true){
             try {
                 connection = server.accept();
-                input = new ObjectInputStream(connection.getInputStream());
+                input = new DataInputStream(connection.getInputStream());
                 output = new ObjectOutputStream(connection.getOutputStream());
                 switch (input.readUTF()){
                     case "close":
@@ -70,6 +70,9 @@ public class SupervisorServer extends Thread{
                         output.writeObject(getSnapshot());
                         break;
                 }
+                //input.close();
+                //output.close();
+                //connection.close();
                 //listen to terminate order
                 sleep(100);
                 
