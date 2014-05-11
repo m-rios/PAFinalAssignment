@@ -302,8 +302,10 @@ public class Supervisor extends javax.swing.JFrame {
             Socket client = new Socket(InetAddress.getLocalHost(), 2222);
             DataOutputStream output = new DataOutputStream(client.getOutputStream());
             ObjectInputStream input = new ObjectInputStream(client.getInputStream());
+            DataInputStream inputStatus = new DataInputStream(client.getInputStream());
             output.writeUTF("close");
             String[][] value = (String[][]) input.readObject();
+            jButton2.setText(inputStatus.readUTF());
             updateView(value);
             output.close();
             input.close();

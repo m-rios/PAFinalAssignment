@@ -28,6 +28,7 @@ public class Playground extends javax.swing.JFrame {
     ArrayList<Child> children = new ArrayList<>();
     ArrayList<Child> deciding = new ArrayList<>();
     public Gateway gate = new Gateway();
+    SupervisorServer supervisor;
     
     public Playground() {  
         gate.close();
@@ -38,6 +39,7 @@ public class Playground extends javax.swing.JFrame {
         for (int i = 11; i < 61; i++) {
             children.add(new Child(i, carousel, slide, swing, deciding, gate,jTextArea8));
         }
+        supervisor = new SupervisorServer(this, 2222);
     }
 
     /**
@@ -531,15 +533,21 @@ public class Playground extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        switchGate();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public String switchGate(){
         if (gate.isClosed()) {
             jButton1.setText("Close");
             gate.open();
+            return "Close";
         } else {
             jButton1.setText("Open");
             gate.close();
+            return "Open";
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         int port = Integer.parseInt(jFormattedTextField1.getText());

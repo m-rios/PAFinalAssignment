@@ -28,6 +28,7 @@ public class SupervisorServer extends Thread{
     ObjectOutputStream output;
     DataInputStream input;
     Playground playground;
+    DataOutputStream statusOutput;
     
     public SupervisorServer(Playground playground, int socket){
         this.playground = playground;
@@ -40,10 +41,6 @@ public class SupervisorServer extends Thread{
         start();
     }
     
-    private void close(){
-        playground.gate.close();
-    }
-    
     private String[][] getSnapshot(){
         String[][] value = new String[3][2];
         value[0] = playground.swing.getSnapShot();
@@ -54,6 +51,7 @@ public class SupervisorServer extends Thread{
     
     @Override
     public void run(){
+        String status = "Close";
         while(true){
             try {
                 connection = server.accept();
@@ -61,12 +59,12 @@ public class SupervisorServer extends Thread{
                 output = new ObjectOutputStream(connection.getOutputStream());
                 switch (input.readUTF()){
                     case "close":
-                        close();
-                        //output.writeUTF(getSnapshot());
+                        status = playground.switchGate();                        
                         output.writeObject(getSnapshot());
+                        statusOutput = new DataOutputStream(connection.getOutputStream());
+                        statusOutput.writeUTF(status);
                         break;
                     case "refresh":
-                        //output.writeUTF(getSnapshot());
                         output.writeObject(getSnapshot());
                         break;
                 }
