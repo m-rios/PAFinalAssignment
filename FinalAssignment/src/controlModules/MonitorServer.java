@@ -11,24 +11,38 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import playground.Slide;
 
 /**
  *
  * @author mario
  */
-public class MonitorServer {
-    
-    public static void main(String[] args) throws SocketException, UnknownHostException, IOException{
-        DatagramSocket socket = new DatagramSocket(2222);
-        DatagramPacket packet;
-        InetAddress address = InetAddress.getByName("E1");
-        int n = 0;
-        byte[] buff = new byte[128];
-        packet = new DatagramPacket(buff, buff.length);
-        socket.receive(packet);
-        System.out.println(packet.getData());
-    }
-    
+public class MonitorServer extends Thread{
+    Slide slide;
+    public MonitorServer(Slide slide){
+       this.slide = slide;
+        start();
+   }    
+   
+   @Override
+   public void run(){
+        try {
+            Monitor monitor = new Monitor(slide);
+            Registry registry = LocateRegistry.createRegistry(1099);
+            Naming.rebind("//localhost/Monitor",monitor);
+        } catch (RemoteException ex) {
+            Logger.getLogger(MonitorServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MonitorServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
 }

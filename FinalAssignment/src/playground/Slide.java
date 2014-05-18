@@ -75,8 +75,20 @@ public class Slide extends Attraction {
         try {
             sleep((long) 500);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Slide.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("got kicked out");
         }
+    }
+    
+    public synchronized int checkAge(){
+        Child child;
+        if (!playingQueue.isEmpty()) {
+            child = playingQueue.get(0);
+            if (child.getAge() > 7) {
+                child.interrupt();
+                return child.getAge();
+            }
+        }
+        return 0;
     }
 
 }

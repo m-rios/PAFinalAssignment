@@ -59,6 +59,10 @@ public class Child extends Thread {
         return "deciding";
     }
     
+    public int getAge(){
+        return this.age;
+    }
+    
     private void updateOuput(){
         String value = "";
         for (int i = 0; i < deciding.size(); i++) {
