@@ -5,21 +5,18 @@
  */
 package controlModules;
 
-import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.text.DefaultCaret;
 
 /**
  *
@@ -77,6 +74,7 @@ public class Supervisor extends javax.swing.JFrame {
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(10);
         jTextArea1.setRows(3);
+        jTextArea1.setCaret(jTextArea3.getCaret());
         jScrollPane2.setViewportView(jTextArea1);
 
         jLabel2.setText("Children waiting:");
@@ -84,6 +82,7 @@ public class Supervisor extends javax.swing.JFrame {
         jTextArea2.setEditable(false);
         jTextArea2.setColumns(12);
         jTextArea2.setRows(5);
+        jTextArea2.setCaret(jTextArea3.getCaret());
         jScrollPane3.setViewportView(jTextArea2);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -121,12 +120,15 @@ public class Supervisor extends javax.swing.JFrame {
         jTextArea3.setColumns(10);
         jTextArea3.setRows(1);
         jScrollPane4.setViewportView(jTextArea3);
+        DefaultCaret caret = (DefaultCaret) jTextArea3.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
         jLabel4.setText("Children waiting:");
 
         jTextArea4.setEditable(false);
         jTextArea4.setColumns(12);
         jTextArea4.setRows(5);
+        jTextArea4.setCaret(jTextArea3.getCaret());
         jScrollPane5.setViewportView(jTextArea4);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -148,11 +150,11 @@ public class Supervisor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -163,6 +165,7 @@ public class Supervisor extends javax.swing.JFrame {
         jTextArea5.setEditable(false);
         jTextArea5.setColumns(10);
         jTextArea5.setRows(5);
+        jTextArea5.setCaret(jTextArea3.getCaret());
         jScrollPane6.setViewportView(jTextArea5);
 
         jLabel6.setText("Children waiting:");
@@ -170,6 +173,7 @@ public class Supervisor extends javax.swing.JFrame {
         jTextArea6.setEditable(false);
         jTextArea6.setColumns(12);
         jTextArea6.setRows(5);
+        jTextArea6.setCaret(jTextArea3.getCaret());
         jScrollPane7.setViewportView(jTextArea6);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);

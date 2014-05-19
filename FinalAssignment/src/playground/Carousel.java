@@ -11,7 +11,6 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 
 /**
@@ -43,14 +42,11 @@ public class Carousel extends Attraction {
     
     Awaker awaker;
     final CyclicBarrier barrier;
-    JProgressBar indicator;
 
-    public Carousel(JTextArea outputPlay, JTextArea outputWait, JProgressBar progressBar, Gateway gate) {
+    public Carousel(JTextArea outputPlay, JTextArea outputWait, Gateway gate) {
         super(outputPlay, outputWait, gate);
         super.playingQueue = new ArrayList<>(5);
         barrier = new CyclicBarrier(5);
-        this.indicator = progressBar;
-        indicator.setMaximum(10);
         awaker = new Awaker(this);
     }
 

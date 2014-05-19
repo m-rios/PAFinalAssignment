@@ -1,0 +1,65 @@
+@startuml
+abstract class playground.Attraction
+annotation java.lang.Override
+annotation java.lang.SuppressWarnings
+class controlModules.MonitorServer
+class controlModules.SupervisorServer
+class java.lang.Thread
+class java.util.ArrayList
+class java.util.Random
+class java.util.concurrent.BrokenBarrierException
+class java.util.concurrent.CyclicBarrier
+class java.util.concurrent.Semaphore
+class java.util.logging.Level
+class java.util.logging.Logger
+class javax.swing.JFrame
+class javax.swing.JTextArea
+class javax.swing.UIManager
+class javax.swing.UnsupportedLookAndFeelException
+class playground.Carousel
+class playground.Child
+class playground.Gateway
+class playground.Playground
+class playground.Slide
+class playground.Swing
+playground.Attraction ..> java.util.ArrayList
+playground.Attraction ..> javax.swing.JTextArea
+playground.Carousel --|> playground.Attraction
+playground.Carousel ..> java.lang.Override
+playground.Carousel ..> java.lang.Thread
+playground.Carousel ..> java.util.ArrayList
+playground.Carousel ..> java.util.concurrent.BrokenBarrierException
+playground.Carousel ..> java.util.concurrent.CyclicBarrier
+playground.Carousel ..> java.util.logging.Level
+playground.Carousel ..> java.util.logging.Logger
+playground.Carousel ..> javax.swing.JTextArea
+playground.Child ..> java.lang.Override
+playground.Child --|> java.lang.Thread
+playground.Child ..> java.util.ArrayList
+playground.Child ..> java.util.Random
+playground.Child ..> java.util.logging.Level
+playground.Child ..> java.util.logging.Logger
+playground.Child ..> javax.swing.JTextArea
+playground.Playground ..> java.lang.SuppressWarnings
+playground.Playground ..> controlModules.MonitorServer
+playground.Playground ..> controlModules.SupervisorServer
+playground.Playground ..> java.util.ArrayList
+playground.Playground ..> java.util.logging.Level
+playground.Playground ..> java.util.logging.Logger
+playground.Playground --|> javax.swing.JFrame
+playground.Playground ..> javax.swing.UIManager
+playground.Playground ..> javax.swing.UnsupportedLookAndFeelException
+playground.Slide --|> playground.Attraction
+playground.Slide ..> java.lang.Override
+playground.Slide ..> java.lang.Thread
+playground.Slide ..> java.util.ArrayList
+playground.Slide ..> java.util.concurrent.Semaphore
+playground.Slide ..> javax.swing.JTextArea
+playground.Swing --|> playground.Attraction
+playground.Swing ..> java.lang.Override
+playground.Swing ..> java.lang.Thread
+playground.Swing ..> java.util.ArrayList
+playground.Swing ..> java.util.logging.Level
+playground.Swing ..> java.util.logging.Logger
+playground.Swing ..> javax.swing.JTextArea
+@enduml
