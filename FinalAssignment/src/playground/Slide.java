@@ -28,15 +28,14 @@ public class Slide extends Attraction {
     public void use(Child child) {
         enter(child);   
         gate.look();
-        climb();
-        drop();
+        play();
         gate.look();
         leave(child);
     }
 
-    private void climb() {
+    private void play() {
         try {
-            sleep((long) 1200);
+            sleep((long) 1200 + 500);
         } catch (InterruptedException ex) {
             System.out.println("got kicked out0");
         }
@@ -67,14 +66,6 @@ public class Slide extends Attraction {
             updatePlayView();
         }
         semaphore.release();
-    }
-
-    private void drop() {
-        try {
-            sleep((long) 500);
-        } catch (InterruptedException ex) {
-            System.out.println("got kicked out");
-        }
     }
     
     public synchronized int checkAge(){
